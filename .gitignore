@@ -1,0 +1,10 @@
+node_modules
+.DS_Store
+build.txt
+diyautoroot
+test.js
+sea-prep.blob
+sea-config.json
+script.js
+randomdirector.js
+index.html

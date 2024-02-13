@@ -1,0 +1,19 @@
+{
+  "name": "diyautoroot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "clararigo",
+  "license": "ISC",
+  "dependencies-dev": {
+    "osc-js": "^2.4.0",
+    "terminal-kit": "^3.0.1"
+  },
+  "devDependencies": {
+    "osc-js": "^2.4.0",
+    "terminal-kit": "^3.0.1"
+  }
+}
