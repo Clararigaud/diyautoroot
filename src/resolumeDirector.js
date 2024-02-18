@@ -17,10 +17,8 @@ class Tableau{
             let clips = {layerid:layer.id, nclips:layer.nombreClips, selected: Math.floor(Math.random() * layer.nombreClips)}
             this.activeclips.push(clips)
         })
-
-            this.run()
-            this.statechangeemitter({groupid:this.id, type:'start'});
-        
+        this.run()
+        this.statechangeemitter({groupid:this.id, type:'start'});
     }
 
     stop(){
@@ -72,23 +70,15 @@ class ResolumeDirector{
             switch (e.type) {
                 case "start":
                     if(this.running){
-                        //                 console.log(`
-                        //  +++++    
-                        // +++++++          
-                        // ++O  O+   ┌──────────────────────────────┐  
-                        // ++  o +  <│   Démarrage du tableau ${group.id}
-                        // ++    +   └──────────────────────────────┘
-                        //                 `)
                         this.interface.claraSay(`Démarrage du tableau ${group.id}`,['^','^','O'])
-                        //this.interface.draw(this.groups)
                     }
                     this.sendTableauData(group.activeclips);
                     break;
                 case "tick":
-                    this.interface.draw(this.groups)
+                    this.interface.drawTableaux(this.groups)
                     break;
                 case "stop":
-                    this.interface.draw(this.groups)
+                    this.interface.drawTableaux(this.groups)
                 default:
                     break;
             }
@@ -119,7 +109,6 @@ class ResolumeDirector{
         }else{
             if(this.verbose){console.info("Déjà démarré")}
         }
-        this.interface.claraSay(`LEZGOOOOW ! `,['o','O','o'])
     }
 
     stop(){
@@ -127,7 +116,6 @@ class ResolumeDirector{
             tableau.stop();
         })
         this.running = false;
-        this.interface.claraSay(`OK j'arrete tout ! `,['_','_','.'])
     }
  
     clearClips(){ 
@@ -148,7 +136,6 @@ class ResolumeDirector{
     sendTableauData(activeclips){
         activeclips.forEach(clips => {
             this.messager.message(`/composition/layers/${clips.layerid}/clips/${clips.selected+1}/connect`, 1);
-            //console.log("sending connect message", `/composition/layers/${clips.layerid}/clips/${clips.selected+1}/connect`)
         });
     }
 }
