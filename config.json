@@ -1,5 +1,5 @@
 {
-    "setup" : {
+    "setup": {
         "resolumeIP": "0.0.0.0",
         "resolumeInputPort": 7001,
         "localIp": "0.0.0.0",
@@ -18,39 +18,40 @@
         }
     ],
     "connector": {
-        "/ambient_timbres_1_1" : {
+        "/ambient_timbres_1_1": {
             "layer": 2,
-            "dashboardlevel" : "clip", 
+            "dashboardlevel": "clip",
             "link": 1
         },
-        "/ambient_timbres_1_2": {},
-        "/ambient_timbres_2_1": {},
-        "/ambient_timbres_2_2": {},
-        "/ambient_timbres_3_1": {},
-        "/ambient_timbres_3_2": {},
-        "/ambient_timbres_4_1": {},
-        "/ambient_timbres_4_2": {},
-        "/ambient_volumes_1_1": {},
-        "/ambient_volumes_1_2": {},
-        "/ambient_volumes_2_1": {},
-        "/ambient_volumes_2_2": {},
-        "/ambient_volumes_3_1": {},
-        "/ambient_volumes_3_2": {},
-        "/ambient_volumes_4_1": {},
-        "/ambient_volumes_4_2": {},
-        "/bass_enveloppe": {},
-        "/bass_note": {},
-        "/monotron_y": {},
-        "/monotron_x": {},
-        "/square_y": {},
-        "/square_x": {},
-        "/square_envelope": {},
-        "/bass_fm": {},
-        "/acid_notes": {},
-        "/acid_filterenv": {},
-        "/acid_filter": {},
-        "/acid_panning": {},
-        "/acid_probability": {},
-        "/acid_glide": {}
+        "/ambient_timbres_1_2": {
+            "layer": 2,
+            "dashboardlevel": "clip",
+            "link": 2
+        },
+        "/bass_note": {
+            "layer": 2,
+            "dashboardlevel": "layer",
+            "link": 1
+        },
+        "/monotron_y": {
+            "layer": 3,
+            "dashboardlevel": "clip",
+            "link": 1
+        },
+        "/monotron_x": {
+            "layer": 2,
+            "dashboardlevel": "clip",
+            "link": 2
+        },
+        "/square_y": {
+            "layer": 2,
+            "dashboardlevel": "layer",
+            "link": 1
+        },
+        "/square_x": {
+            "layer": 2,
+            "dashboardlevel": "layer",
+            "link": 2
+        }
     }
 }
