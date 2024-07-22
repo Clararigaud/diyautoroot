@@ -135,7 +135,7 @@ class InterfaceASCII extends InterfaceMama{
         let maxDur = this.getMaxDurationTab(tableaux);
         let durWidth = String(maxDur).length;
         tableaux.forEach((tableau)=>{
-            console.log(`[${j+1}]Tableau: ${tableau.id}`)
+            console.log(`[${j+1}]`)
             tabHeight +=1;
             if(tableau.activeclips){
                 let i =0;

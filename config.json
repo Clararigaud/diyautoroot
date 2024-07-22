@@ -2,49 +2,55 @@
     "setup" : {
         "resolumeIP": "0.0.0.0",
         "resolumeInputPort": 7001,
-        "resolumeOutputPort": 0
+        "localIp": "0.0.0.0",
+        "localPort": 9000
     },
-    "tableaux": [
+    "metronomes": [
         {
-            "id": 2,
-            "layers": [
-                {"id": 1, "nombreClips": 3},
-                {"id": 2, "nombreClips": 3},
-                {"id": 3, "nombreClips": 3},
-                {"id": 4, "nombreClips": 3}
-            ],
-            "duration": 500
+            "layer": 1,
+            "duration": 25,
+            "n_clips": 14
         },
         {
-            "id": 1,
-            "layers": [
-                {"id": 5, "nombreClips": 3},
-                {"id": 6, "nombreClips": 3},
-                {"id": 7, "nombreClips": 3},
-                {"id": 8, "nombreClips": 3}
-            ],
-            "duration": 10
-        },
-        {
-            "id": 3,
-            "layers": [
-                {"id": 9, "nombreClips": 3},
-                {"id": 10, "nombreClips": 3},
-                {"id": 11, "nombreClips": 3},
-                {"id": 12, "nombreClips": 3},
-                {"id": 13, "nombreClips": 1}
-            ],
-            "duration": 10
-        },
-        {
-            "id": 4,
-            "layers": [
-                {"id": 14, "nombreClips": 3},
-                {"id": 15, "nombreClips": 3},
-                {"id": 16, "nombreClips": 3},
-                {"id": 17, "nombreClips": 3}
-            ],
-            "duration": 10
+            "layer": 4,
+            "duration": 2,
+            "n_clips": 3
         }
-    ]
+    ],
+    "connector": {
+        "/ambient_timbres_1_1" : {
+            "layer": 2,
+            "dashboardlevel" : "clip", 
+            "link": 1
+        },
+        "/ambient_timbres_1_2": {},
+        "/ambient_timbres_2_1": {},
+        "/ambient_timbres_2_2": {},
+        "/ambient_timbres_3_1": {},
+        "/ambient_timbres_3_2": {},
+        "/ambient_timbres_4_1": {},
+        "/ambient_timbres_4_2": {},
+        "/ambient_volumes_1_1": {},
+        "/ambient_volumes_1_2": {},
+        "/ambient_volumes_2_1": {},
+        "/ambient_volumes_2_2": {},
+        "/ambient_volumes_3_1": {},
+        "/ambient_volumes_3_2": {},
+        "/ambient_volumes_4_1": {},
+        "/ambient_volumes_4_2": {},
+        "/bass_enveloppe": {},
+        "/bass_note": {},
+        "/monotron_y": {},
+        "/monotron_x": {},
+        "/square_y": {},
+        "/square_x": {},
+        "/square_envelope": {},
+        "/bass_fm": {},
+        "/acid_notes": {},
+        "/acid_filterenv": {},
+        "/acid_filter": {},
+        "/acid_panning": {},
+        "/acid_probability": {},
+        "/acid_glide": {}
+    }
 }

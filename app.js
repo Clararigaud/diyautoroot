@@ -9,126 +9,146 @@ function init(configFile){
                 interface.claraSay("Il manque \"resolumeIP\" dans le fichier json", ['x','x','_'], true)
                 return -1
             }
-            // if(!setup.resolumeOutputPort){
-            //     console.log("Il manque \"resolumeOutputPort\"")
-            //     return -1
-            // }
             if(!setup.resolumeInputPort){
                 interface.claraSay("Il manque \"resolumeInputPort\" dans le fichier json", ['x','x','_'], true)
                 return -1
             }
-            resolumeConn = {
+            if(!setup.localIp){
+                interface.claraSay("Il manque \"localIp\" dans le fichier json", ['x','x','_'], true)
+                return -1
+            }
+            if(!setup.localPort){
+                interface.claraSay("Il manque \"localPort\" dans le fichier json", ['x','x','_'], true)
+                return -1
+            }
+            outPutOSC = {
                 ip: setup.resolumeIP,
-                outputport: setup.resolumeOutputPort, 
-                inputport : setup.resolumeInputPort 
+                port : setup.resolumeInputPort 
+            },
+            inputOSC = {
+                ip: setup.localIp,
+                port : setup.localPort 
             }
         }else{
             interface.claraSay("Il manque le setup dans le fichier json {\"setup\":..., \"tableaux\": [...]} ", ['x','x','_'], true)
             return -1
         }
 
-        if(co.tableaux){
+        if(co.metronomes){
             let success = true;
             let myerror;
-            if(Array.isArray(co.tableaux)){
-                if(co.tableaux.length>0){
-                    for(let i =0; i<co.tableaux.length; i++){
-                        let tableau = co.tableaux[i];
-                        if(tableau.id!= undefined){
-                            if(typeof(tableau.id)== 'number'){
-                                if(tableau.duration != undefined){
-                                    if(typeof(tableau.duration)== 'number'){
-                                        if(tableau.layers){
-                                            if(Array.isArray(tableau.layers)){
-                                                if(tableau.layers.length>0){
-                                                    let ok= false;
-                                                    let reason = ''
-                                                    tableau.layers.forEach((layer)=>{
-                                                        if(typeof(layer=='object')){
-                                                            if(layer.id != undefined){
-                                                                if(typeof(layer.id)== 'number'){
-                                                                    if(layer.nombreClips != undefined){
-                                                                        if(typeof(layer.nombreClips)== 'number'){
-                                                                            ok = true
-                                                                        }else{
-                                                                            reason = 'layer '+layer.id+': nombreClips doit etre un nombre'
-                                                                        }
-                                                                    }else{
-                                                                        reason = 'layer '+layer.id+': nombreClips manquant'
-                                                                    }
-                                                                    
-                                                                    
-                                                                }else{
-                                                                    reason = 'id doit etre une nombre'
-                                                                }
-                                                            }else{
-                                                                reason = 'id pas defini'
-                                                            }
-                                                        }else{
-                                                            reason = 'Probleme de structure de layer'
-                                                        }
-                                                    })
-                                                    success = ok;
-                                                    if(!success){
-                                                        myerror = [`Probleme dans les layers de tableau ${tableau.id}: ${reason}`, ['x','x','_']]
-                                                    }
-                                                }else{
-                                                    success = false
-                                                    myerror = [`Il n'y a aucunen layer dans tableau ${tableau.id}`, ['x','x','_']]
-                                                    break;  
-                                                }
-                                            }
-                                            else{
-                                                success = false
-                                                myerror = [`Probleme de structure des layers dans tableau ${tableau.id}`, ['x','x','_']]
-                                                break;
-                                            }
+            if(Array.isArray(co.metronomes)){
+                if(co.metronomes.length>0){
+                    for(let i =0; i<co.metronomes.length; i++){
+                        let metronome = co.metronomes[i];
+                        if(metronome.layer != undefined){
+                            if(typeof(metronome.layer)== 'number'){
+                                if(metronome.duration != undefined){
+                                    if(typeof(metronome.duration)== 'number'){
+                                        if(metronome.n_clips != undefined){
+                                            success = true;
                                         }else{
                                             success = false;
-                                            myerror = [`Il manque les 'layers' dans le tableau ${tableau.id} du fichier json`, ['x','x','_']]
+                                            myerror = [`Il manque le nombre de clips de la layer 'n_clips' dans le metronome ${i + 1} du fichier json`, ['x','x','_']]
                                             break;
                                         }
                                     }else{
                                         success = false
-                                        myerror = [`La duration doit etre un nombre dans tableau ${tableau.id}`, ['x','x','_']]
+                                        myerror = [`La duration doit etre un nombre dans metronome ${i+1}`, ['x','x','_']]
                                         break;
                                     }
                                 }else{
                                     success = false
-                                    myerror = [`Il manque la 'duration' dans tableau ${tableau.id}`, ['x','x','_']]
+                                    myerror = [`Il manque la 'duration' dans metronome ${i+1}`, ['x','x','_']]
                                     break;
                                 }
                             }else{
                                 success = false;
-                                myerror = [`L'id du tableau doit etre un nombre danns le fichier json`, ['x','x','_']]
+                                myerror = [`La valeur de la layer 'layer' doit etre un nombre dans le fichier json`, ['x','x','_']]
                                 break;
                             }
                         }else{
                             success = false;
-                            myerror = [`Il manque l'id dans le tableau ${tableau.id} du fichier json`, ['x','x','_']]
+                            myerror = [`Il manque 'layer' dans le metronome ${i+1} du fichier json`, ['x','x','_']]
                             break;
                         }
                     }
                     if(success){
-                        groups = co.tableaux;
+                        metronomes = co.metronomes;
                     }else{
                         interface.claraSay(myerror[0], myerror[1], true)
                         return -1
                     }
                 }
                 else{
-                    interface.claraSay("Il n'y a aucun tableau à charger", ['x','x','_'], true)
+                    interface.claraSay("Il n'y a aucun metronomes à charger", ['x','x','_'], true)
                     return -1
                 }
             }
             else{
-                interface.claraSay("Probleme de structure des tableaux", ['x','x','_'], true)
+                interface.claraSay("Probleme de structure dans le json des metronomes", ['x','x','_'], true)
                 return -1
             }
-        }else{
-            interface.claraSay("Il manque les tableaux dans le fichier json {\"setup\":..., \"tableaux\": [{...},{...},{...},...]} ", ['x','x','_'], true)
-            return -1
         }
+        // if(co.connector){
+        //     let success = true;
+        //     let myerror;
+        //     if(Array.isArray(co.connector)){
+        //         if(co.connector.length>0){
+        //             for(let i =0; i<co.connector.length; i++){
+        //                 let conn = co.connector[i];
+        //                 if(conn.layer != undefined){
+        //                     if(typeof(metronome.layer)== 'number'){
+        //                         if(metronome.duration != undefined){
+        //                             if(typeof(metronome.duration)== 'number'){
+        //                                 if(metronome.n_clips != undefined){
+        //                                     success = true;
+        //                                 }else{
+        //                                     success = false;
+        //                                     myerror = [`Il manque le nombre de clips de la layer 'n_clips' dans le metronome ${i + 1} du fichier json`, ['x','x','_']]
+        //                                     break;
+        //                                 }
+        //                             }else{
+        //                                 success = false
+        //                                 myerror = [`La duration doit etre un nombre dans metronome ${i+1}`, ['x','x','_']]
+        //                                 break;
+        //                             }
+        //                         }else{
+        //                             success = false
+        //                             myerror = [`Il manque la 'duration' dans metronome ${i+1}`, ['x','x','_']]
+        //                             break;
+        //                         }
+        //                     }else{
+        //                         success = false;
+        //                         myerror = [`La valeur de la layer 'masklayer' doit etre un nombre dans le fichier json`, ['x','x','_']]
+        //                         break;
+        //                     }
+        //                 }else{
+        //                     success = false;
+        //                     myerror = [`Il manque 'layer' dans le connector ${i+1} du fichier json`, ['x','x','_']]
+        //                     break;
+        //                 }
+        //             }
+        //             if(success){
+        //                 OSCconnector = co.connector;
+        //             }else{
+        //                 interface.claraSay(myerror[0], myerror[1], true)
+        //                 return -1
+        //             }
+        //         }
+        //         else{
+        //             interface.claraSay("Il n'y a aucun connectors à charger", ['x','x','_'], true)
+        //             return -1
+        //         }
+        //     }
+        //     else{
+        //         interface.claraSay("Probleme de structure dans le json des connectors", ['x','x','_'], true)
+        //         return -1
+        //     }
+
+        //     console.log("checking connectors")
+        // }
+
     } catch (error) {
         interface.claraSay("Probleme à la lecture du fichier de config", ['x','x','_'], true)
         switch (error.errno) {
@@ -144,7 +164,7 @@ function init(configFile){
 }
 
 function start(){
-    const rd = new ResolumeDirector(resolumeConn, groups, interface, false);
+    const rd = new ResolumeDirector(outPutOSC, metronomes, interface, false);
     interface.on( 'onoff', () => { 
         if(rd.running){
             interface.claraSay(`OK j'arrete tout ! `,['_','_','.'])
@@ -172,7 +192,7 @@ const Interfaces = require("./src/Interface");
 
 const maxStart = false;
 let interface;
-if(maxStart){
+if(false){
     const maxApi = require("max-api");
     interface = new Interfaces.InterfaceConsole();
 }else{
@@ -182,8 +202,9 @@ if(maxStart){
 interface.claraSay("WELCOME TO DIYAUTO\\ROOT", ['°','°','o'], true)
 
 let configFile = "config.json"
-let resolumeConn = {};
-let groups;
+let outPutOSC = {};
+let inPutOSC = {};
+let metronomes;
 setTimeout(() => { 
     if(!process.argv[2]){
         interface.claraSay("pas de fichier config specifié, j'utilise par defaut "+ configFile, ['O','O','o'], true)
