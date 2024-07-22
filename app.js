@@ -21,11 +21,11 @@ function init(configFile) {
                 interface.claraSay("Il manque \"localPort\" dans le fichier json", ['x', 'x', '_'], true)
                 return -1
             }
-            outputOSC = {
+            OSC_infos.output = {
                 ip: setup.resolumeIP,
                 port: setup.resolumeInputPort
-            },
-                inputOSC = {
+            };
+            OSC_infos.input = {
                     ip: setup.localIp,
                     port: setup.localPort
                 }
@@ -107,9 +107,7 @@ function init(configFile) {
                                             if (obj.link > 0 && obj.link <= 8) {
                                                 if (obj.dashboardlevel != undefined) {
                                                     if (obj.dashboardlevel == "clip" || obj.dashboardlevel == "layer") {
-                                                        oscConnectors.push(obj);
                                                         success = true;
-
                                                     } else {
                                                         success = false
                                                         myerror = [`La valeur de 'dashboardlevel' doit etre soit "clip" soit "layer" dans ${osc[i]} du fichier json`, ['x', 'x', '_']]
@@ -152,7 +150,7 @@ function init(configFile) {
                         }
                     }
                     if (success) {
-                        OSCconnector = co.connector;
+                        OSC_infos.connectors = co.connector;
                     } else {
                         interface.claraSay(myerror[0], myerror[1], true)
                         return -1
@@ -184,7 +182,7 @@ function init(configFile) {
 }
 
 function start() {
-    const rd = new ResolumeDirector(outputOSC, metronomes, interface, false);
+    const rd = new ResolumeDirector(OSC_infos, metronomes, interface, false);
     interface.on('onoff', () => {
         if (rd.running) {
             interface.claraSay(`OK j'arrete tout ! `, ['_', '_', '.'])
@@ -222,10 +220,12 @@ if (false) {
 interface.claraSay("WELCOME TO DIYAUTO\\ROOT", ['°', '°', 'o'], true)
 
 let configFile = "config.json"
-let outputOSC = {};
-let inputOSC = {};
+let OSC_infos = {
+    output: {},
+    input: {},
+    connectors: {}
+};
 let metronomes = [];
-let oscConnectors = [];
 setTimeout(() => {
     if (!process.argv[2]) {
         interface.claraSay("pas de fichier config specifié, j'utilise par defaut " + configFile, ['O', 'O', 'o'], true)

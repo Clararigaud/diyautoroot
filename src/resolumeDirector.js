@@ -59,7 +59,7 @@ class ResolumeDirector{
         const { createRequire } = require('node:module');
         require = createRequire(__filename); 
         const OSCConnector = require('./OSCConnector');
-        this.messager = new OSCConnector(conn.ip, conn.port, conn.outputport);
+        this.messager = new OSCConnector(conn);
         this.running = false
         this.groups = [];
         this.interface = myinterface
