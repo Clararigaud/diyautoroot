@@ -1,5 +1,5 @@
 class Tableau{
-    constructor(id, duration, layers, statechangecb){
+    constructor(id, duration, layer, nclips, statechangecb){
         this.clock;
         this.count;
         this.task;
@@ -7,16 +7,15 @@ class Tableau{
         this.done = false;
         this.duration = duration;
         this.activeClips = [];
-        this.layers = layers;
+        this.layer = layer;
+        this.n_clips = nclips;
         this.statechangeemitter = statechangecb;
     }
 
-     start(){
+    start(){
         this.activeclips = [];
-        this.layers.slice().reverse().forEach((layer)=>{
-            let clips = {layerid:layer.id, nclips:layer.nombreClips, selected: Math.floor(Math.random() * layer.nombreClips)}
-            this.activeclips.push(clips)
-        })
+        let clips = {layerid:this.layer, nclips:this.n_clips, selected: Math.floor(Math.random() * this.n_clips)}
+        this.activeclips.push(clips)
         this.run()
         this.statechangeemitter({groupid:this.id, type:'start'});
     }
@@ -56,11 +55,11 @@ class Tableau{
 }
 
 class ResolumeDirector{
-    constructor(conn, architecture, myinterface, verbose=false){
+    constructor(conn, metronomes, myinterface, verbose=true){
         const { createRequire } = require('node:module');
         require = createRequire(__filename); 
         const OSCConnector = require('./OSCConnector');
-        this.messager = new OSCConnector(conn.ip, conn.inputport, conn.outputport);
+        this.messager = new OSCConnector(conn);
         this.running = false
         this.groups = [];
         this.interface = myinterface
@@ -83,8 +82,8 @@ class ResolumeDirector{
                     break;
             }
         };
-        architecture.forEach((tableau) => {
-            this.groups.push(new Tableau(parseInt(tableau.id), tableau.duration, tableau.layers, this.changestate))
+        metronomes.forEach((tableau, i) => {
+            this.groups.push(new Tableau(i, tableau.duration, tableau.layer, tableau.n_clips, this.changestate))
         })
         if(this.verbose){
             console.log("Initialized randomizer, tableaux:", this.groups.length, " ResolumeIP: ", conn.ip, " ResolumeOutputPort: ", conn.outputport, " ResolumeInputPort: ", conn.inputport) 
