@@ -131,29 +131,22 @@ class InterfaceASCII extends InterfaceMama{
         this.header()
         let tabHeight = 0;
         let j =0
-        let durOffset = 2
-        let maxDur = this.getMaxDurationTab(tableaux);
-        let durWidth = String(maxDur).length;
         tableaux.forEach((tableau)=>{
-            console.log(`[${j+1}]`)
+            console.log(`[${j+1}]:      ${String(tableau.duration-tableau.count)}`)
             tabHeight +=1;
             if(tableau.activeclips){
                 let i =0;
                 tableau.activeclips.forEach(clips => {
                     let strlayer = [];
-                    strlayer.push(' '.repeat(durOffset))
-                    if(i == Math.round(tableau.activeclips.length/2)){
-                        let width = durWidth - String(tableau.duration-tableau.count).length;
-                        strlayer.push(`${' '.repeat(Math.floor(width/2))}[${String(tableau.duration-tableau.count)}]${' '.repeat(Math.ceil(width/2))}`)
-                    }else{
-                        strlayer.push(`${' '.repeat(durWidth+2)}`)
-                    }
-                    strlayer.push(' '.repeat(durOffset))
+                    strlayer.push(`${' '.repeat(2)}`)
+                    
                     strlayer.push(this.outLayer(clips))
                     console.log(strlayer.join(""))
                     i++
                     tabHeight +=1;
                 })
+                console.log('\n');
+                tabHeight +=1;
             }else{
                 console.log("no active clips")
             }

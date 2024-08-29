@@ -1,14 +1,23 @@
 class OSCConnector {
     constructor(infos) {
         this.output = infos.output;
-        this.input = infos.input;
-        this.connectors = infos.connectors;
+        this.input = null;
         this.OSC = require('osc-js');
         this.socket = require('dgram').createSocket("udp4");
         this.socket.on("error", function (err) {
             console.log("Socket error: " + err);
         });
+        // this.initInputListener(infos.input);
+    }
 
+    message(oscadress, value = "") {
+        let message = new this.OSC.Message(oscadress, value);
+        let binary = message.pack()
+        this.socket.send(Buffer.from(binary), 0, binary.byteLength, this.output.port, this.output.ip, function (err, bytes) { });
+    }
+
+    initInputListener(infos){
+        this.input = infos;
         this.socket.on('message', msg => {
             const t = new DataView(msg.buffer.slice( msg.byteOffset, msg.byteOffset + msg.byteLength ));
             const oscmsg = new this.OSC.Message()
@@ -40,12 +49,6 @@ class OSCConnector {
         });
 
         this.socket.bind(this.input.port);
-    }
-
-    message(oscadress, value = "") {
-        let message = new this.OSC.Message(oscadress, value);
-        let binary = message.pack()
-        this.socket.send(Buffer.from(binary), 0, binary.byteLength, this.output.port, this.output.ip, function (err, bytes) { });
     }
 }
 module.exports = OSCConnector
