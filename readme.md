@@ -1,27 +1,34 @@
 # Structure du fichier de config json
 ```
 {
-    "setup" : {
-        "resolumeIP": "0.0.0.0", // l'ip de Resolume
-        "resolumeInputPort": 7000, // le port de Resolume
-        "localIp": "0.0.0.0", // 
-        "localPort": 9000 // le port à écouter pour recevoir l'OSC
+    "setup": {
+        "resolumeIP": "192.168.1.45", // adresse resolume
+        "resolumeInputPort": 7000 // port resolume
     },
-    "metronomes": [
+    "tableaux": [
         {
-            "layer": 1, // le numero de la layer dans resolume
-            "duration": 25, // la durée d'un tick en secondes
-            "n_clips": 14 // le nombre de clips de la layer
+            "layers": [6, 2], // layers vers lesquelles envoyer le message de connect à chaque fin de compte à rebours ( le meme numero de clip random pour chacune )
+            "duration": 1, // la durée du compte à rebours
+            "n_clips": 14, // le nombre de clip de chaque layers ( il doit etre le meme  pour toutes du coup) 
+            "connector" : {
+                "value_interval": [0, 1], // valeur aléatoire  ( R2) 
+                "custom_message": "/composition/layers/2/posx**value**" // message custom envoyé à chaque fin de compte à rebours, valeur peut etre fixe ou **value**  
+            }
         },
-        {...},
-        {...}
-    ],
-    "connector": { // 
-        "/osc_message_1" : { // clé OSC en entrée
-            "layer": 2, // numero de layer de destination
-            "dashboardlevel" : "clip", "clip" pour envoyer au dashboard de tous les clips, "layer" pour envoyer au dashboard du layer
-            "link": 1 // link associé dans le dashboard resolume (de 1 à 8) 
-        }, 
-         "/osc_message_2" : { ... }
-    }
+        {
+            "layers": [1], // si il y a une seule layer
+            "duration": 4,
+            "n_clips": 3,
+            "connector" : {
+                "custom_message": "/composition/layers/5/posx32000"  // exemple avec valeur fixe
+            } 
+        },
+        {
+            "layers": [3,5], // exemple sans connector
+            "duration": 4,
+            "n_clips": 3
+        }
+    ]
+}
+
 }```
