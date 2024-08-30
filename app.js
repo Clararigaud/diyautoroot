@@ -35,6 +35,13 @@ function init(configFile) {
                                     if (typeof (tableau.duration) == 'number') {
                                         if (tableau.n_clips != undefined) {
                                             success = true;
+                                            if(tableau.connector){
+                                                if(!tableau.connector.custom_message){
+                                                    myerror = [`Probleme avec connector (custom_message) dans le tableau ${i + 1} du fichier json`, ['x', 'x', '_']]
+                                                    interface.claraSay(myerror[0], myerror[1], true)
+                                                    tableau.connector = null;
+                                                }
+                                            }
                                         } else {
                                             success = false;
                                             myerror = [`Il manque le nombre de clips de la layer 'n_clips' dans le tableau ${i + 1} du fichier json`, ['x', 'x', '_']]

@@ -9,7 +9,6 @@
             "duration": 10,
             "n_clips": 14,
             "connector" : {
-                "value_interval": [0, 1],
                 "custom_message": "/composition/layers/2/posx32000"
             }
         },
@@ -18,7 +17,7 @@
             "duration": 15,
             "n_clips": 3,
             "connector" : {
-                "value_interval": [-10, -10],
+                "value_interval": [-10, 10],
                 "custom_message": "/composition/layers/2/**value**"
             }
         }

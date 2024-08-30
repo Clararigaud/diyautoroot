@@ -23,6 +23,11 @@ class ResolumeDirector{
                     break;
                 case "stop":
                     this.interface.drawTableaux(this.groups)
+                    break;
+                case "connector":
+                    console.log(e.message)
+                    this.sendCustomMessage(e.message);
+                    break;
                 default:
                     break;
             }
@@ -77,6 +82,10 @@ class ResolumeDirector{
         }
     }
     
+    sendCustomMessage(message){
+        this.messager.message(message, 1);
+    }
+
     sendTableauData(activeclips){
         activeclips.forEach(clips => {
             this.messager.message(`/composition/layers/${clips.layerid}/clips/${clips.selected+1}/connect`, 1);
