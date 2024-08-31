@@ -26,7 +26,7 @@ class ResolumeDirector{
                     break;
                 case "connector":
                     console.log(e.message)
-                    this.sendCustomMessage(e.message);
+                    this.sendCustomMessage(e.message, e.value);
                     break;
                 default:
                     break;
@@ -82,8 +82,8 @@ class ResolumeDirector{
         }
     }
     
-    sendCustomMessage(message){
-        this.messager.message(message, 1);
+    sendCustomMessage(message, value){
+        this.messager.message(message, value);
     }
 
     sendTableauData(activeclips){

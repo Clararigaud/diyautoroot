@@ -12,23 +12,12 @@ class Tableau{
         this.statechangeemitter = statechangecb;
         this.placeHolder = '**value**';
         this.connector = null;
-        this.checkConnector(connector);
+        if(connector){
+            this.connector = JSON.parse(JSON.stringify(connector));
+        }
+        // this.checkConnector(connector);
         console.log(this.connector)
 
-    }
-
-    checkConnector(connector){
-        if(connector){
-            if(typeof(connector.custom_message) === "string" && !(Array.isArray(connector.value_interval) ^ connector.custom_message.includes(this.placeHolder))){
-                this.connector = JSON.parse(JSON.stringify(connector));
-                if(Array.isArray(connector.value_interval) && connector.custom_message.includes(this.placeHolder)){
-                    if(!connector.value_interval.length == 2){
-                        this.connector = null;
-                    }
-                    
-                }
-            }
-        }
     }
 
     start(){
@@ -41,13 +30,23 @@ class Tableau{
         this.run();
         this.statechangeemitter({groupid:this.id, type:'start'});
         if(this.connector){
-            let strmessage = this.connector.custom_message;
-            if(this.connector.value_interval){
-                this.connectorValue = Math.floor(Math.random() * (this.connector.value_interval[1] - this.connector.value_interval[0]) + this.connector.value_interval[0]);
-                strmessage = strmessage.replace(this.placeHolder, String(this.connectorValue));
-            }
-            console.log(strmessage)
-            this.statechangeemitter({groupid:this.id, type:'connector', message: strmessage});
+            this.connector.forEach((connector) => {
+                let strmessage = connector.custom_message;
+                if(connector.value_interval_int || connector.value_interval_float){
+                    let value_interval = [];
+                    if(connector.value_interval_int){
+                        value_interval = connector.value_interval_int;
+                    }else if(connector.value_interval_float){
+                        value_interval = connector.value_interval_float;
+                    }
+                    let connectorValue = Math.random() * (value_interval[1] - value_interval[0]) + value_interval[0];
+                    if(connector.value_interval_int){
+                        connectorValue =  Math.floor(connectorValue);
+                    }
+                    // strmessage = strmessage.replace(this.placeHolder, String(connectorValue));
+                    this.statechangeemitter({groupid:this.id, type:'connector', message: strmessage, value: connectorValue });
+                }
+            })
         }
     }
 
@@ -73,7 +72,7 @@ class Tableau{
             this.done = done
             this.count = 0;
             this.clock = setInterval(() => {
-                if(this.count<this.duration){
+                if(this.count<this.duration-1){
                     this.statechangeemitter({groupid:this.id, type:'tick'});
                     this.count = this.count+1;
                 }else{

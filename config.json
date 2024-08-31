@@ -1,25 +1,32 @@
 {
     "setup": {
-        "resolumeIP": "192.168.1.45",
-        "resolumeInputPort": 7000
+        "resolumeIP": "192.168.1.14",
+        "resolumeInputPort": 7001
     },
-    "tableaux": [
+    "metronomes": [
         {
-            "layers": [6, 2],
-            "duration": 10,
-            "n_clips": 14,
-            "connector" : {
-                "custom_message": "/composition/layers/2/posx32000"
-            }
+            "layers": [1, 2],
+            "duration": 3,
+            "n_clips": 4,
+            "connector" : [
+                {
+                    "value_interval_float": [0, 1],
+                    "custom_message": "/composition/layers/4/dashboard/link1/"
+                },
+                {
+                    "value_interval_float": [0, 1],
+                    "custom_message": "/composition/layers/5/dashboard/link1/"
+                },
+                {
+                    "value_interval_int": [-1920, -1920],
+                    "custom_message": "/composition/groups/1/video/effects/transform/positionx/" 
+                }
+            ]
         },
         {
             "layers": [1],
             "duration": 15,
-            "n_clips": 3,
-            "connector" : {
-                "value_interval": [-10, 10],
-                "custom_message": "/composition/layers/2/**value**"
-            }
+            "n_clips": 3
         }
     ]
 }

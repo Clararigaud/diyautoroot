@@ -18,70 +18,63 @@ function init(configFile) {
                 port: setup.resolumeInputPort
             };
         } else {
-            interface.claraSay("Il manque le setup dans le fichier json {\"setup\":..., \"tableaux\": [...]} ", ['x', 'x', '_'], true)
+            interface.claraSay("Il manque le setup dans le fichier json {\"setup\":..., \"metronomes\": [...]} ", ['x', 'x', '_'], true)
             return -1
         }
 
-        if (co.tableaux) {
+        if (co.metronomes) {
             let success = true;
             let myerror;
-            if (Array.isArray(co.tableaux)) {
-                if (co.tableaux.length > 0) {
-                    for (let i = 0; i < co.tableaux.length; i++) {
-                        let tableau = co.tableaux[i];
-                        if (tableau.layers != undefined) {
-                            if (Array.isArray(tableau.layers)) {
-                                if (tableau.duration != undefined) {
-                                    if (typeof (tableau.duration) == 'number') {
-                                        if (tableau.n_clips != undefined) {
+            if (Array.isArray(co.metronomes)) {
+                if (co.metronomes.length > 0) {
+                    for (let i = 0; i < co.metronomes.length; i++) {
+                        let metronome = co.metronomes[i];
+                        if (metronome.layers != undefined) {
+                            if (Array.isArray(metronome.layers)) {
+                                if (metronome.duration != undefined) {
+                                    if (typeof (metronome.duration) == 'number') {
+                                        if (metronome.n_clips != undefined) {
                                             success = true;
-                                            if(tableau.connector){
-                                                if(!tableau.connector.custom_message){
-                                                    myerror = [`Probleme avec connector (custom_message) dans le tableau ${i + 1} du fichier json`, ['x', 'x', '_']]
-                                                    interface.claraSay(myerror[0], myerror[1], true)
-                                                    tableau.connector = null;
-                                                }
-                                            }
                                         } else {
                                             success = false;
-                                            myerror = [`Il manque le nombre de clips de la layer 'n_clips' dans le tableau ${i + 1} du fichier json`, ['x', 'x', '_']]
+                                            myerror = [`Il manque le nombre de clips de la layer 'n_clips' dans le metronome ${i + 1} du fichier json`, ['x', 'x', '_']]
                                             break;
                                         }
                                     } else {
                                         success = false
-                                        myerror = [`La duration doit etre un nombre dans tableau ${i + 1}`, ['x', 'x', '_']]
+                                        myerror = [`La duration doit etre un nombre dans metronome ${i + 1}`, ['x', 'x', '_']]
                                         break;
                                     }
                                 } else {
                                     success = false
-                                    myerror = [`Il manque la 'duration' dans tableau ${i + 1}`, ['x', 'x', '_']]
+                                    myerror = [`Il manque la 'duration' dans metronome ${i + 1}`, ['x', 'x', '_']]
                                     break;
                                 }
                             } else {
                                 success = false;
-                                myerror = [`La valeur de la layer 'layer' doit etre un tableau de nombre genre [0, 1] ou [2] dans le fichier json`, ['x', 'x', '_']]
+                                myerror = [`La valeur de la layer 'layer' doit etre un metronome de nombre genre [0, 1] ou [2] dans le fichier json`, ['x', 'x', '_']]
                                 break;
                             }
                         } else {
                             success = false;
-                            myerror = [`Il manque 'layer' dans le tableau ${i + 1} du fichier json`, ['x', 'x', '_']]
+                            myerror = [`Il manque 'layer' dans le metronome ${i + 1} du fichier json`, ['x', 'x', '_']]
                             break;
                         }
                     }
                     if (success) {
-                        tableaux = co.tableaux;
+                        metronomes = co.metronomes;
                     } else {
                         interface.claraSay(myerror[0], myerror[1], true)
                         return -1
                     }
                 }
                 else {
-                    interface.claraSay("Il n'y a aucun tableaux à charger", ['x', 'x', '_'], true)
+                    interface.claraSay("Il n'y a aucun metronomes à charger", ['x', 'x', '_'], true)
                     return -1
                 }
             }
             else {
-                interface.claraSay("Probleme de structure dans le json des tableaux", ['x', 'x', '_'], true)
+                interface.claraSay("Probleme de structure dans le json des metronomes", ['x', 'x', '_'], true)
                 return -1
             }
         }
@@ -100,7 +93,7 @@ function init(configFile) {
 }
 
 function start() {
-    const rd = new ResolumeDirector(OSC_infos, tableaux, interface, false);
+    const rd = new ResolumeDirector(OSC_infos, metronomes, interface, false);
     interface.on('onoff', () => {
         if (rd.running) {
             interface.claraSay(`OK j'arrete tout ! `, ['_', '_', '.'])
@@ -135,7 +128,7 @@ let OSC_infos = {
     output: {}
 };
 
-let tableaux = [];
+let metronomes = [];
 setTimeout(() => {
     if (!process.argv[2]) {
         interface.claraSay("pas de fichier config specifié, j'utilise par defaut " + configFile, ['O', 'O', 'o'], true)
