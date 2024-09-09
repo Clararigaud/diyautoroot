@@ -78,7 +78,7 @@ class InterfaceASCII extends InterfaceMama{
         this.term.on( 'key' , (name) => {
             this.inputs(name)
         }) 
-        this.maxHeight = 40;
+        this.maxHeight = 58;
         this.done = true;
         this.restingFace = ['○','○','3']
         this.claraface = this.restingFace

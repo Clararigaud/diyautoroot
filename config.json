@@ -1,7 +1,9 @@
 {
     "setup": {
         "resolumeIP": "192.168.1.14",
-        "resolumeInputPort": 7001
+        "resolumeInputPort": 7001,
+        "billyIP": "192.168.1.14",
+        "billyPort": 7001
     },
     "metronomes": [
         {

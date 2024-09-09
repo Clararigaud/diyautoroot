@@ -25,7 +25,7 @@ class ResolumeDirector{
                     this.interface.drawTableaux(this.groups)
                     break;
                 case "connector":
-                    console.log(e.message)
+                    // console.log(e.message)
                     this.sendCustomMessage(e.message, e.value);
                     break;
                 default:

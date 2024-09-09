@@ -17,6 +17,10 @@ function init(configFile) {
                 ip: setup.resolumeIP,
                 port: setup.resolumeInputPort
             };
+            OSC_infos.input = {
+                ip: setup.billyIP,
+                port: setup.billyPort
+            };
         } else {
             interface.claraSay("Il manque le setup dans le fichier json {\"setup\":..., \"metronomes\": [...]} ", ['x', 'x', '_'], true)
             return -1
@@ -93,7 +97,7 @@ function init(configFile) {
 }
 
 function start() {
-    const rd = new ResolumeDirector(OSC_infos, metronomes, interface, false);
+    const rd = new DIYautoroot(OSC_infos, metronomes, interface, false);
     interface.on('onoff', () => {
         if (rd.running) {
             interface.claraSay(`OK j'arrete tout ! `, ['_', '_', '.'])
@@ -116,7 +120,7 @@ function start() {
 const { createRequire } = require('node:module');
 require = createRequire(__filename);
 const fs = require('fs');
-const ResolumeDirector = require('./src/resolumeDirector');
+const DIYautoroot = require('./src/resolumeDirector');
 const Interfaces = require("./src/Interface");
 
 let interface = new Interfaces.InterfaceASCII();

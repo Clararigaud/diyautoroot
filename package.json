@@ -15,5 +15,8 @@
   "devDependencies": {
     "osc-js": "^2.4.0",
     "terminal-kit": "^3.0.1"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
   }
 }

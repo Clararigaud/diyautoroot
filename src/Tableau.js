@@ -16,7 +16,7 @@ class Tableau{
             this.connector = JSON.parse(JSON.stringify(connector));
         }
         // this.checkConnector(connector);
-        console.log(this.connector)
+        // console.log(this.connector)
 
     }
 
