@@ -18,7 +18,7 @@ function init(configFile) {
                 port: setup.resolumeInputPort
             };
             OSC_infos.input = {
-                port: setup.resolumeInputPort
+                port: setup.morseInputPort
             };
             OSC_infos.outputBilly = {
                 port: setup.billyInputPort

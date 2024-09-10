@@ -2,6 +2,7 @@
     "setup": {
         "resolumeIP": "0.0.0.0",
         "resolumeInputPort": 7002,
+        "morseInputPort": 7003,
         "billyInputPort": 7001
     },
     "metronomes": [
