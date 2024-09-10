@@ -4,25 +4,31 @@ class ResolumeDirector{
         require = createRequire(__filename); 
         const OSCConnector = require('./OSCConnector');
         const Tableau = require('./Tableau');
+        const Morse = require('./Morse');
         this.messager = new OSCConnector(conn);
         this.running = false
         this.groups = [];
-        this.interface = myinterface
+        this.interface = myinterface;
         this.verbose = verbose;
+        this.morse = new Morse(myinterface);
+        this.animClock = setInterval((e) => {
+            this.triggerFrame(); 
+        }, 100);
+        
         this.changestate = (e) => {
-            let group = this.groups[this.getGroupIndexfromId(e.groupid)]
+            let group = this.groups[this.getGroupIndexfromId(e.groupid)];
             switch (e.type) {
                 case "start":
-                    if(this.running){
-                        this.interface.claraSay(`Démarrage du tableau ${group.id+1}`,['^','^','O'])
-                    }
+                    // if(this.running){
+                    //     // this.interface.claraSay(`Démarrage du tableau ${group.id+1}`,['^','^','O'])
+                    // }
                     this.sendTableauData(group.activeclips);
                     break;
                 case "tick":
-                    this.interface.drawTableaux(this.groups)
+                    //this.interface.drawTableaux(this.groups)
                     break;
                 case "stop":
-                    this.interface.drawTableaux(this.groups)
+                    //this.interface.drawTableaux(this.groups)
                     break;
                 case "connector":
                     // console.log(e.message)
@@ -38,8 +44,24 @@ class ResolumeDirector{
         if(this.verbose){
             console.log("Initialized randomizer, tableaux:", this.groups.length, " ResolumeIP: ", conn.ip, " ResolumeOutputPort: ", conn.outputport, " ResolumeInputPort: ", conn.inputport) 
         }
+
+        this.messager.eventEmitter.on('/morse', (e) => {
+            if(e.args[0] == 0){
+                this.morse.buttonStop();
+            }else if(e.args[0] == 1){
+                this.morse.buttonStart();
+            }
+        })
+
+        this.morse.eventEmitter.on('sos', () => {
+            this.messager.messageBilly('sos', 1);
+        })
     }
 
+    triggerFrame(){
+        this.interface.morseTrackNextFrame();
+        this.interface.draw(false, false);
+    }
     getGroupIndexfromId(id){
         let i = 0;
         while(this.groups[i].id != id){
@@ -66,7 +88,7 @@ class ResolumeDirector{
         })
         this.running = false;
     }
- 
+
     clearClips(){ 
         this.groups.forEach(group => {
             let msg = `/composition/groups/${group.id}/disconnectlayers`;

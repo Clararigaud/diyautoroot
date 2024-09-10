@@ -13,14 +13,17 @@ function init(configFile) {
                 interface.claraSay("Il manque \"resolumeInputPort\" dans le fichier json", ['x', 'x', '_'], true)
                 return -1
             }
-            OSC_infos.output = {
+            OSC_infos.outputResolume = {
                 ip: setup.resolumeIP,
                 port: setup.resolumeInputPort
             };
             OSC_infos.input = {
-                ip: setup.billyIP,
-                port: setup.billyPort
+                port: setup.resolumeInputPort
             };
+            OSC_infos.outputBilly = {
+                port: setup.billyInputPort
+            };
+            
         } else {
             interface.claraSay("Il manque le setup dans le fichier json {\"setup\":..., \"metronomes\": [...]} ", ['x', 'x', '_'], true)
             return -1

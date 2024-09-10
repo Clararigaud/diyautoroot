@@ -1,25 +1,35 @@
 class OSCConnector {
     constructor(infos) {
-        this.output = infos.output;
+        this.outputResolume = infos.outputResolume;
+        this.outputBilly = infos.outputBilly;
         this.input = null;
         this.OSC = require('osc-js');
+        const EventEmitter = require('node:events');
+        this.eventEmitter = new EventEmitter();
         this.socket = require('dgram').createSocket("udp4");
         this.socket.on("error", function (err) {
             console.log("Socket error: " + err);
         });
-        // this.initInputListener(infos.input);
+        this.initInputListener(infos.input);
     }
 
     message(oscadress, value = "") {
         let message = new this.OSC.Message(oscadress, value);
         let binary = message.pack()
-        this.socket.send(Buffer.from(binary), 0, binary.byteLength, this.output.port, this.output.ip, function (err, bytes) { });
+        this.socket.send(Buffer.from(binary), 0, binary.byteLength, this.outputResolume.port, this.outputResolume.ip, function (err, bytes) { });
     }
 
-    initInputListener(infos){
+    messageBilly(oscadress, value = "") {
+            let message = new this.OSC.Message(oscadress, value);
+            let binary = message.pack()
+            this.socket.send(Buffer.from(binary), 0, binary.byteLength, this.outputBilly.port, this.outputResolume.ip, function (err, bytes) { });
+    }
+
+    initInputListener(infos) {
         this.input = infos;
         this.socket.on('message', msg => {
-            const t = new DataView(msg.buffer.slice( msg.byteOffset, msg.byteOffset + msg.byteLength ));
+        try {
+            const t = new DataView(msg.buffer.slice(msg.byteOffset, msg.byteOffset + msg.byteLength));
             const oscmsg = new this.OSC.Message()
             oscmsg.unpack(t)
 
@@ -27,26 +37,18 @@ class OSCConnector {
                 types: oscmsg.types,
                 args: oscmsg.args
             }
+            this.eventEmitter.emit(oscmsg.address, data);
 
-            if(Object.keys(this.connectors).includes(oscmsg.address)){
-                const conn = this.connectors[oscmsg.address]; 
-                let str = "/composition/layers/"
-                str += String(conn.layer) +"/";
-                if(conn.dashboardlevel == "clip"){
-                    str += "clips/*/";
-                }
-                str += "dashboard/link" + String(conn.link) + "/";
-
-                // console.log(str, String(oscmsg.args[0]))
-                this.message(str, parseFloat(oscmsg.args[0]))
-            }
-            // console.log("receiving "+oscmsg.address + ": " + oscmsg.args +  " at " + this.input.port)
+            //console.log("receiving "+oscmsg.address + ": " + oscmsg.args +  " at " + this.input.port)
+        } catch (error) {
+            // console.log(error)
+        }
         });
 
-        this.socket.on('listening', () => {
-            var address = this.socket.address();
-            console.log("listening on :" + address.address + ":" + address.port);
-        });
+        // this.socket.on('listening', () => {
+        //     var address = this.socket.address();
+        //     // console.log("listening on :" + address.address + ":" + address.port);
+        // });
 
         this.socket.bind(this.input.port);
     }
