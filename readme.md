@@ -2,10 +2,11 @@
 ```
 {
     "setup": {
-        "resolumeIP": "192.168.1.45", // adresse resolume
-        "resolumeInputPort": 7000 // port resolume
+        "resolumeIP": "0.0.0.0",
+        "resolumeInputPort": 7002,
+        "billyInputPort": 7001
     },
-    "tableaux": [
+    "metronomes": [
         {
             "layers": [6, 2], // layers vers lesquelles envoyer le message de connect à chaque fin de compte à rebours ( le meme numero de clip random pour chacune )
             "duration": 1, // la durée du compte à rebours
