@@ -1,6 +1,6 @@
 {
     "setup": {
-        "resolumeIP": "192.168.1.10",
+        "resolumeIP": "0.0.0.0",
         "resolumeInputPort": 7002,
         "billyInputPort": 7001
     },
