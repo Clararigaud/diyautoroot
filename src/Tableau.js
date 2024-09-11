@@ -1,33 +1,30 @@
 class Tableau{
-    constructor(id, duration, layers, nclips, connector, statechangecb ){
+    constructor(id, duration, startdelay, layers, nclips, connector, statechangecb ){
         this.clock;
         this.count;
         this.task;
         this.id = id;
         this.done = false;
         this.duration = duration;
+        this.startdelay = startdelay;
         this.activeclips = [];
         this.layers = layers;
         this.n_clips = nclips;
         this.statechangeemitter = statechangecb;
-        this.placeHolder = '**value**';
         this.connector = null;
         if(connector){
             this.connector = JSON.parse(JSON.stringify(connector));
         }
-        // this.checkConnector(connector);
-        // console.log(this.connector)
-
     }
 
-    start(){
+    startprocess(){
         this.activeclips = [];
         let clip_number = Math.floor(Math.random() * this.n_clips);
         this.layers.slice().reverse().forEach((layer)=>{
             let clips = {layerid: layer, nclips:this.n_clips, selected: clip_number}
             this.activeclips.push(clips)
         })
-        this.run();
+
         this.statechangeemitter({groupid:this.id, type:'start'});
         if(this.connector){
             this.connector.forEach((connector) => {
@@ -43,11 +40,14 @@ class Tableau{
                     if(connector.value_interval_int){
                         connectorValue =  Math.floor(connectorValue);
                     }
-                    // strmessage = strmessage.replace(this.placeHolder, String(connectorValue));
                     this.statechangeemitter({groupid:this.id, type:'connector', message: strmessage, value: connectorValue });
                 }
             })
         }
+        this.run();
+    }
+    start(){
+        setTimeout(() => { this.startprocess();}, this.startdelay*1000);
     }
 
     stop(){
@@ -62,22 +62,26 @@ class Tableau{
         this.statechangeemitter({groupid:this.id, type:'stop'});
     }
 
-    async restart(){
+    restart(){
+        this.stop();
+        this.start();
+    }
+
+    async restartprocess(){
         this.stop()
-        this.start()
+        this.startprocess()
     }  
-    
     async run(){
         this.task = new Promise((done)=> { 
             this.done = done
             this.count = 0;
             this.clock = setInterval(() => {
                 if(this.count<this.duration-1){
-                    this.statechangeemitter({groupid:this.id, type:'tick'});
                     this.count = this.count+1;
+                    this.statechangeemitter({groupid:this.id, type:'tick'});
                 }else{
                     clearInterval(this.clock)
-                    this.restart()
+                    this.restartprocess()
                 }
             }, 1000);   
         

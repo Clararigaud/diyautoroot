@@ -8,27 +8,16 @@
     "metronomes": [
         {
             "layers": [1, 2],
-            "duration": 3,
-            "n_clips": 4,
-            "connector" : [
-                {
-                    "value_interval_float": [0, 1],
-                    "custom_message": "/composition/layers/4/dashboard/link1/"
-                },
-                {
-                    "value_interval_float": [0, 1],
-                    "custom_message": "/composition/layers/5/dashboard/link1/"
-                },
-                {
-                    "value_interval_int": [-1920, -1920],
-                    "custom_message": "/composition/groups/1/video/effects/transform/positionx/" 
-                }
-            ]
+            "duration": 2,
+            "startdelay": 0,
+            "n_clips": 4
         },
         {
-            "layers": [1],
-            "duration": 15,
-            "n_clips": 3
+            "layers": [3],
+            "duration": 2,
+            "startdelay": 1,
+            "n_clips": 4
+            
         }
     ]
 }

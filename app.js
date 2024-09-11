@@ -41,7 +41,19 @@ function init(configFile) {
                                 if (metronome.duration != undefined) {
                                     if (typeof (metronome.duration) == 'number') {
                                         if (metronome.n_clips != undefined) {
-                                            success = true;
+                                            if(metronome.startdelay != undefined){
+                                                if (typeof (metronome.startdelay) == 'number') {
+                                                    success = true;
+                                                }else {
+                                                    success = false;
+                                                    myerror = [`'startdelay' doit etre un nombre dans le metronome ${i + 1} du fichier json`, ['x', 'x', '_']]
+                                                    break;
+                                                }
+                                            }else {
+                                                success = false;
+                                                myerror = [`il manque 'startdelay' dans le metronome ${i + 1} du fichier json`, ['x', 'x', '_']]
+                                                break;
+                                            }
                                         } else {
                                             success = false;
                                             myerror = [`Il manque le nombre de clips de la layer 'n_clips' dans le metronome ${i + 1} du fichier json`, ['x', 'x', '_']]
@@ -118,6 +130,8 @@ function start() {
         rd.restartGroup(parseInt(n) - 1)
     })
     interface.start();
+    interface.claraSay(`LEZGOOOOW ! `, ['o', 'O', 'o'])
+    rd.start();
 }
 
 const { createRequire } = require('node:module');

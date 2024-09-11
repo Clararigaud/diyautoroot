@@ -19,27 +19,25 @@ class ResolumeDirector{
             let group = this.groups[this.getGroupIndexfromId(e.groupid)];
             switch (e.type) {
                 case "start":
-                    // if(this.running){
-                    //     // this.interface.claraSay(`Démarrage du tableau ${group.id+1}`,['^','^','O'])
-                    // }
+                    this.interface.drawTableaux(this.groups);
                     this.sendTableauData(group.activeclips);
                     break;
                 case "tick":
-                    //this.interface.drawTableaux(this.groups)
+                    this.interface.drawTableaux(this.groups);
                     break;
                 case "stop":
-                    //this.interface.drawTableaux(this.groups)
+                    this.interface.drawTableaux(this.groups);
                     break;
                 case "connector":
                     // console.log(e.message)
-                    this.sendCustomMessage(e.message, e.value);
+                    // this.sendCustomMessage(e.message, e.value);
                     break;
                 default:
                     break;
             }
         };
         metronomes.forEach((tableau, i) => {
-            this.groups.push(new Tableau(i, tableau.duration, tableau.layers, tableau.n_clips, tableau.connector, this.changestate))
+            this.groups.push(new Tableau(i, tableau.duration, tableau.startdelay, tableau.layers, tableau.n_clips, tableau.connector, this.changestate))
         })
         if(this.verbose){
             console.log("Initialized randomizer, tableaux:", this.groups.length, " ResolumeIP: ", conn.ip, " ResolumeOutputPort: ", conn.outputport, " ResolumeInputPort: ", conn.inputport) 
@@ -60,7 +58,7 @@ class ResolumeDirector{
 
     triggerFrame(){
         this.interface.morseTrackNextFrame();
-        this.interface.draw(false, false);
+        // this.interface.draw(false, false);
     }
     getGroupIndexfromId(id){
         let i = 0;
@@ -97,11 +95,11 @@ class ResolumeDirector{
     }
 
     restartGroup(g){
-        if(this.groups.length>g && this.running){
-            this.groups[g].restart();
-        }else{
-            return
-        }
+        // if(this.groups.length>g && this.running){
+        //     this.groups[g].restart();
+        // }else{
+        //     return
+        // }
     }
     
     sendCustomMessage(message, value){
