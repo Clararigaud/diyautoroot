@@ -23,6 +23,7 @@ function init(configFile) {
             OSC_infos.outputBilly = {
                 port: setup.billyInputPort
             };
+            debugmode = false || setup.debugmode;
             
         } else {
             interface.claraSay("Il manque le setup dans le fichier json {\"setup\":..., \"metronomes\": [...]} ", ['x', 'x', '_'], true)
@@ -129,7 +130,7 @@ function start() {
     interface.on('tabselect', (n) => {
         rd.restartGroup(parseInt(n) - 1)
     })
-    interface.start();
+    interface.start(debugmode);
     interface.claraSay(`LEZGOOOOW ! `, ['o', 'O', 'o'])
     rd.start();
 }
@@ -148,7 +149,7 @@ let configFile = "config.json"
 let OSC_infos = {
     output: {}
 };
-
+let debugmode = false;
 let metronomes = [];
 setTimeout(() => {
     if (!process.argv[2]) {

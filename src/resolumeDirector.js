@@ -30,7 +30,7 @@ class ResolumeDirector{
                     break;
                 case "connector":
                     // console.log(e.message)
-                    // this.sendCustomMessage(e.message, e.value);
+                    this.sendCustomMessage(e.message, e.value);
                     break;
                 default:
                     break;
@@ -58,7 +58,7 @@ class ResolumeDirector{
 
     triggerFrame(){
         this.interface.morseTrackNextFrame();
-        // this.interface.draw(false, false);
+        this.interface.draw();
     }
     getGroupIndexfromId(id){
         let i = 0;

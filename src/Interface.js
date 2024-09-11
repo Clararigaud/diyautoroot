@@ -85,7 +85,7 @@ class InterfaceASCII extends InterfaceMama {
         this.claraface = this.restingFace;
         this.clarawords = '';
         this.fps = 5;
-        this.tabdrawactivated = false;
+        this.debugmode = false;
         const MorseInterface = require('./MorseInterface');
         this.morseinterface = new MorseInterface(this.maxLength);
         this.showinMorseWord = false;
@@ -176,7 +176,6 @@ class InterfaceASCII extends InterfaceMama {
  └─┼───────────┬─┬───────────────────┐  <3      g
    └──────┼┼┼┼┼│.│┼┼┼┼┼────────────┼┼│           o
           └────┴─┴────┘            └─┴──────────.`)
-        console.log("s: \"start\/stop\" || 1 pour demarrer le tableau [1], 2 pour le tab [2] ... || q pour quitter")
     }
 
     outLayer(clips) {
@@ -201,7 +200,7 @@ class InterfaceASCII extends InterfaceMama {
             console.log("─".repeat(this.maxLength));
             let remain = this.maxHeight - this.header();
             remain -= 3;
-            if(this.tabdrawactivated){
+            if(this.debugmode){
                 this.drawTab()
             }
             console.log("\n".repeat(remain))
@@ -280,8 +279,10 @@ class InterfaceASCII extends InterfaceMama {
         }
     }
 
-    start() {
+    start(debug) {
         this.claraSay("READY TO GO !", ['*', '*', '<'], true)
+        this.debugmode = debug;
+        console.log("debug",debug)
         this.term.grabInput()
     }
 
