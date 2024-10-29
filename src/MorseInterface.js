@@ -276,24 +276,30 @@ class MorseInterface {
             }
         }
     }
+    
     addMorsePart(char) {
         if (char === ".") {
-            this.morseTrack[0] += this.morsePoint[0] + "   ";
-            this.morseTrack[1] += this.morsePoint[1] + "   ";
-            this.morseTrack[2] += this.morsePoint[2] + "   ";
+            this.morseTrack[0] = this.morsePoint[0] + "   " + this.morseTrack[0];
+            this.morseTrack[1] = this.morsePoint[1] + "   " + this.morseTrack[1];
+            this.morseTrack[2] = this.morsePoint[2] + "   " + this.morseTrack[2];
         } else if (char === "_") {
-            this.morseTrack[0] += this.morseTrait[0] + "   ";
-            this.morseTrack[1] += this.morseTrait[1] + "   ";
-            this.morseTrack[2] += this.morseTrait[2] + "   ";
+            this.morseTrack[0] = this.morseTrait[0] + "   " + this.morseTrack[0];
+            this.morseTrack[1] = this.morseTrait[1] + "   " + this.morseTrack[1];
+            this.morseTrack[2] = this.morseTrait[2] + "   " + this.morseTrack[2];
         } else if (char === " ") {
-            this.morseTrack[0] += "   ";
-            this.morseTrack[1] += "   ";
-            this.morseTrack[2] += "   ";
+            this.morseTrack[0] = "   " + this.morseTrack[0]; 
+            this.morseTrack[1] = "   " + this.morseTrack[1]; 
+            this.morseTrack[2] = "   " + this.morseTrack[2]; 
+        }
+        else {
+            this.morseTrack[0] = " " + this.morseTrack[0];
+            this.morseTrack[1] = " " + this.morseTrack[1];
+            this.morseTrack[2] = " " + this.morseTrack[2];
         }
         while (this.morseTrack[0].length > this.maxLength) {
             for (let i = 0; i < 3; i++) {
                 let str = this.morseTrack[i].split('');
-                str.splice(0, 1)
+                str.splice(str.length -1 , 1)
                 this.morseTrack[i] = str.join('');
             }
         }

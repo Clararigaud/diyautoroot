@@ -104,7 +104,7 @@ class InterfaceASCII extends InterfaceMama {
     morseTrackNextFrame(){
         for(let i = 0; i< 3; i++){
             let str = this.morseinterface.morseTrack[i].split('');
-            str.splice(0, 1)
+            str.splice(str.length, 1)
             this.morseinterface.morseTrack[i] = str.join('');
         }
     }
@@ -200,9 +200,6 @@ class InterfaceASCII extends InterfaceMama {
             console.log("─".repeat(this.maxLength));
             let remain = this.maxHeight - this.header();
             remain -= 3;
-            if(this.debugmode){
-                this.drawTab()
-            }
             console.log("\n".repeat(remain))
             this.drawMorse();
             console.log("─".repeat(this.maxLength));
@@ -212,6 +209,10 @@ class InterfaceASCII extends InterfaceMama {
 
     drawMorse(){
         if(this.morseinterface.morseTrack[0] != ""){
+            this.morseinterface.morseTrack[0] = " " + this.morseinterface.morseTrack[0];
+            this.morseinterface.morseTrack[1] = " " + this.morseinterface.morseTrack[1];
+            this.morseinterface.morseTrack[2] = " " + this.morseinterface.morseTrack[2];
+
             console.log(this.morseinterface.morseTrack[0]);
             console.log(this.morseinterface.morseTrack[1]);
             console.log(this.morseinterface.morseTrack[2]);
